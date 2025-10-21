@@ -1,6 +1,8 @@
 services:
   postgres:
     image: postgres:latest
+    networks:
+      - appnet
     restart: always
     environment:
       POSTGRES_USER: admin
@@ -17,6 +19,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    networks:
+      - appnet
     working_dir: /app
     command: "npm run dev"
     restart: always
@@ -37,6 +41,10 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+
+networks:
+  appnet:
+    driver: bridge
 
 volumes:
   pgdata:
